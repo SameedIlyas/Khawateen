@@ -21,13 +21,13 @@ const productSchema = new mongoose.Schema({
     enum: ['Handicrafts', 'Food', 'Textiles', 'Art']
   },
   seller: {
-    type: String,
+    type: Object,
     ref: 'User',
     required: true
   },
   image: {
-      type: Object,
-      default:{}
+    type: String,  // Store base64 string here
+    default: ''
   },
 });
 

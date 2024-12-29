@@ -15,7 +15,7 @@ export const useCartStore = create((set) => ({
   removeItem: (itemId) => {
     const { isAuthenticated } = useAuthStore.getState();
     if (isAuthenticated) {
-      set((state) => ({ items: state.items.filter((item) => item.id !== itemId) }));
+      set((state) => ({ items: state.items.filter((item) => item._id !== itemId) }));
     } else {
       alert('Please log in to remove items from the cart.');
       console.warn('Unauthorized: Cannot remove item from the cart.');

@@ -38,9 +38,9 @@ export function CartDrawer({ isOpen, onClose }) {
             <>
               <div className="flex-grow overflow-y-auto p-4">
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-center mb-4 p-2 border rounded">
+                  <div key={item._id} className="flex items-center mb-4 p-2 border rounded">
                     <img
-                      src={item.image.filePath}
+                      src={item.image ? `data:image/jpeg;base64,${item.image}` : '/path/to/default/image.jpg'} // Use base64 image
                       alt={item.title}
                       className="w-16 h-16 object-cover rounded"
                     />
@@ -49,7 +49,7 @@ export function CartDrawer({ isOpen, onClose }) {
                       <p className="text-emerald-600">Rs. {item.price}</p>
                     </div>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item._id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <X size={20} />

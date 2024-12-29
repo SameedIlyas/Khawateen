@@ -1,7 +1,7 @@
-const Product = require("../models/Product");
-const { upload, fileSizeFormatter } = require("../utils/fileUpload");
-const { gfs } = require("../utils/gridfs");
+const { upload } = require("../utils/fileUpload"); // assuming this is handling file upload via multer or any other method
 const fs = require("fs");
+const path = require("path");
+const Product = require("../models/Product");
 
 const createProduct = async (req, res) => {
   try {
@@ -14,60 +14,35 @@ const createProduct = async (req, res) => {
     }
 
     // Upload image if provided
-    let fileData;
+    let fileData = '';
     if (req.file) {
-      try {
-        const file = req.file; // Multer handles file storage
+      const filePath = path.join(__dirname, '../uploads', req.file.filename); // Get file path
 
-        // Save file to GridFS
-        const writeStream = gfs.createWriteStream({
-          filename: file.originalname,
-          content_type: file.mimetype,
-        });
+      // Read the image file and convert to base64
+      const image = fs.readFileSync(filePath);
+      fileData = image.toString('base64');
 
-        const fileStream = fs.createReadStream(file.path);
-        fileStream.pipe(writeStream);
-
-        writeStream.on("close", async (uploadedFile) => {
-          fileData = {
-            fileName: uploadedFile.filename,
-            filePath: uploadedFile._id, // Use file ID from GridFS
-            fileType: file.mimetype,
-            fileSize: fileSizeFormatter(file.size, 2),
-          };
-
-          // Create product with image data
-          const product = new Product({
-            title,
-            description,
-            price,
-            category,
-            image: fileData,
-            seller: sellerId,
-          });
-
-          const savedProduct = await product.save();
-          res.status(201).json(savedProduct);
-        });
-
-        writeStream.on("error", (err) => {
-          console.error("GridFS upload error:", err);
-          return res.status(500).json({ message: "Failed to upload image" });
-        });
-
-      } catch (error) {
-        console.error("GridFS upload error:", error);
-        return res.status(500).json({ message: "Failed to upload image" });
-      }
-    } else {
-      return res.status(400).json({ message: "Image is required" });
+      // Optionally delete the file after reading (if not using the file system to store)
+      fs.unlinkSync(filePath);
     }
+
+    // Create product with image data (base64 string)
+    const product = new Product({
+      title,
+      description,
+      price,
+      category,
+      image: fileData,  // Store base64-encoded image
+      seller: sellerId,
+    });
+
+    const savedProduct = await product.save();
+    res.status(201).json(savedProduct);
   } catch (error) {
     console.error("Product creation error:", error);
     res.status(500).json({ message: "Failed to create product" });
   }
 };
-
 
 const getProducts = async (req, res) => {
   try {
@@ -81,6 +56,7 @@ const getProducts = async (req, res) => {
   }
 };
 
+// Get product by ID (with image)
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate("seller", "name");
@@ -88,19 +64,11 @@ const getProductById = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // If image exists in product, fetch it from GridFS
-    if (product.image && product.image.filePath) {
-      const file = await gfs.files.findOne({ _id: mongoose.Types.ObjectId(product.image.filePath) });
-
-      if (file) {
-        // Serve image as stream
-        const readStream = gfs.createReadStream(file._id);
-        readStream.pipe(res);
-      } else {
-        return res.status(404).json({ message: "Image not found in GridFS" });
-      }
+    // If image exists, serve the base64 image
+    if (product.image) {
+      return res.status(200).json({ ...product.toObject(), image: `data:image/jpeg;base64,${product.image}` });
     } else {
-      return res.status(404).json({ message: "Product image not found" });
+      return res.status(404).json({ message: "No image associated with the product" });
     }
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -108,7 +76,7 @@ const getProductById = async (req, res) => {
   }
 };
 
-
+// Update Product
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -124,8 +92,16 @@ const updateProduct = async (req, res) => {
       return res.status(403).json({ message: "Not authorized to update this product" });
     }
 
-    // Update product
+    // Update product fields
     const updates = req.body;
+    if (req.file) {
+      // Upload new image if provided and update image field
+      const filePath = path.join(__dirname, '../uploads', req.file.filename);
+      const image = fs.readFileSync(filePath);
+      updates.image = image.toString('base64'); // Store new image as base64
+      fs.unlinkSync(filePath); // Clean up the temporary uploaded file
+    }
+
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
     res.status(200).json(updatedProduct);
   } catch (error) {
@@ -134,6 +110,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Delete Product
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

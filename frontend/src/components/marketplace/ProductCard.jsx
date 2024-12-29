@@ -7,7 +7,7 @@ export function ProductCard({ product, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false); // Track loading state
   const addToCart = useCartStore(state => state.addItem);
   const { user } = useAuthStore();
-  const isOwner = user?.name === product.seller;
+  const isOwner = user?._id === product.seller?._id;
 
   const handleDelete = async (productId) => {
     setIsDeleting(true); // Start loading state
@@ -22,10 +22,15 @@ export function ProductCard({ product, onDelete }) {
     }
   };
 
+  // Check if the image is base64 encoded and handle it
+  const imageSrc = product.image
+    ? `data:image/jpeg;base64,${product.image}` // If image exists as base64
+    : '/path/to/default/image.jpg'; // Use a default image if no image is present
+
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <img
-        src={product.image.filePath}
+        src={imageSrc} // Use base64 image or default image
         alt={product.title}
         className="w-full h-48 object-cover"
       />
@@ -34,7 +39,7 @@ export function ProductCard({ product, onDelete }) {
         <p className="text-gray-600 text-sm mb-2">{product.description}</p>
         <div className="flex justify-between items-center">
           <span className="text-emerald-600 font-semibold">Rs. {product.price}</span>
-          <span className="text-sm text-gray-500">{product.seller}</span>
+          <span className="text-sm text-gray-500">{product.seller?.name}</span>
         </div>
         <div className="mt-4 flex justify-between items-center">
           <span className="text-sm bg-emerald-100 text-emerald-800 px-2 py-1 rounded">

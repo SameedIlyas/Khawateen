@@ -1,34 +1,17 @@
-const mongoose = require("mongoose");
-const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage").GridFsStorage;
+const multer = require('multer');
 const path = require("path");
-const fs = require("fs");
 
-
-// Load environment variables from .env file
-require('dotenv').config();
-
-// MongoDB URI (your MongoDB Atlas URI)
-const mongoURI = process.env.MONGODB_URI;
-
-// Check if mongoURI is defined
-if (!mongoURI) {
-    throw new Error("MongoDB URI is not defined. Please set the MONGODB_URI environment variable.");
-  }
-  
-
-// File storage configuration using GridFS
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (req, file) => {
-    return {
-      bucketName: "uploads", // Bucket name for storing files
-      filename: `${Date.now()}-${file.originalname}`, // Unique filename
-    };
+// Set up multer for handling file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');  // Specify where to save uploaded files (temporarily before base64 conversion)
   },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);  // Set the filename to be unique
+  }
 });
 
-// Multer configuration to handle file upload with GridFS
+// Multer configuration
 const upload = multer({ storage });
 
 // Function to format file size

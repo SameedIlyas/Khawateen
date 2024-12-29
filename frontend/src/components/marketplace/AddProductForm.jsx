@@ -10,7 +10,8 @@ export function AddProductForm({ onSuccess }) {
 
   const handleFileChange = (e) => {
     if (e.target.files?.length) {
-      setImageFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setImageFile(file); // Store the file object
     }
   };
 
@@ -24,16 +25,17 @@ export function AddProductForm({ onSuccess }) {
       Object.keys(data).forEach((key) => {
         const value = data[key];
         if (value !== undefined && value !== null) {
-          formData.append(key, value.toString());
+          formData.append(key, value);
         }
       });
-
+  
       if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append('image', imageFile); // Add the file object instead of base64 string
       }
- 
+  
       const newProduct = await products.create(formData);
       reset();
+      setImageFile(null); // Reset the image file state
       onSuccess?.(newProduct);
     } catch (err) {
       setError('Failed to add product. Please try again.');
@@ -41,7 +43,7 @@ export function AddProductForm({ onSuccess }) {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
