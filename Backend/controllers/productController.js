@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const { upload, fileSizeFormatter } = require("../utils/fileUpload");
 const { gfs } = require("../utils/gridfs");
+const fs = require("fs");
 
 const createProduct = async (req, res) => {
   try {

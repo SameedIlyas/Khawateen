@@ -1,35 +1,102 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Footer } from './components/layout/Footer';
+import { Header } from './components/layout/Header';
+import { PrivateRoute } from './components/routes/PrivateRoute';
+import { useInitializeAuth } from './hooks/useInitializeAuth';
+import { About } from './pages/About';
+import { Auth } from './pages/Auth';
+import { Blog } from './pages/Blog';
+import { Cart } from './pages/Cart';
+import { Community } from './pages/Community';
+import { Contact } from './pages/Contact';
+import { Home } from './pages/Home';
+import { Learn } from './pages/Learn';
+import { Marketplace } from './pages/Marketplace';
+import { SuccessStories } from './pages/SuccessStories';
+import { Tutorials } from './pages/Tutorials';
+import { useAuthStore } from './store/authStore';
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const { isAuthenticated } = useAuthStore();
+  useInitializeAuth();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route 
+              path="/login" 
+              element={
+                isAuthenticated ? <Navigate to="/dashboard" /> : <Auth mode="login" />
+              } 
+            />
+            <Route 
+              path="/register" 
+              element={
+                isAuthenticated ? <Navigate to="/dashboard" /> : <Auth mode="register" />
+              } 
+            />
+            
+            {/* Public Routes */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/tutorials" element={<Tutorials />} />
+            <Route path="/success-stories" element={<SuccessStories />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            
+            {/* Protected Routes */}
+            <Route 
+              path="/" 
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              } 
+            />
+
+            <Route 
+              path="/cart" 
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              } 
+            />
+
+            <Route 
+              path="/dashboard" 
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              } 
+            />
+            
+            <Route 
+              path="/learn" 
+              element={
+                <PrivateRoute>
+                  <Learn />
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/community" 
+              element={
+                <PrivateRoute>
+                  <Community />
+                </PrivateRoute>
+              } 
+            />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
