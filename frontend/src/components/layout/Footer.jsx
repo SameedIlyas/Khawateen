@@ -41,21 +41,10 @@ export function Footer() {
   
             <div>
               <h3 className="text-lg font-semibold mb-4 text-white-200">Languages</h3>
-              <ul className="space-y-3">
-                <li>
-                  <button className="text-teal-200 hover:text-teal-400 transition duration-200">English</button>
-                </li>
-                <li>
-                  <button className="text-teal-200 hover:text-teal-400 transition duration-200">اردو</button>
-                </li>
-                <li>
-                  <button className="text-teal-200 hover:text-teal-400 transition duration-200">پنجابی</button>
-                </li>
-              </ul>
+              <div id="google_translate_element" className="bg-white p-3 rounded-md shadow-md"></div>
             </div>
           </div>
         </div>
       </footer>
     );
   }
-  
