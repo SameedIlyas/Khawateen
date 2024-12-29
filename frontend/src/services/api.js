@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 //const DEV_ENV = import.meta.env.VITE_APP_DEV_ENV; 
-const DEV_ENV = "development";
+const DEV_ENV = "production";
 let API_URL = 'http://localhost:5000/api';
 
 if (DEV_ENV === "development") {
   API_URL = 'http://localhost:5000/api';
 } else {
   if (DEV_ENV === "production") {
-    API_URL = '';
+    API_URL = 'https://khawateen-backend.onrender.com:5000/api';
   }
 }
 
