@@ -28,28 +28,28 @@ export function ProductCard({ product, onDelete }) {
     : '/path/to/default/image.jpg'; // Use a default image if no image is present
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-teal-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       <img
         src={imageSrc} // Use base64 image or default image
         alt={product.title}
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+        <h3 className="text-lg font-semibold mb-2 text-teal-800">{product.title}</h3>
         <p className="text-gray-600 text-sm mb-2">{product.description}</p>
         <div className="flex justify-between items-center">
-          <span className="text-emerald-600 font-semibold">Rs. {product.price}</span>
+          <span className="text-teal-600 font-semibold">Rs. {product.price}</span>
           <span className="text-sm text-gray-500">{product.seller?.name}</span>
         </div>
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-sm bg-emerald-100 text-emerald-800 px-2 py-1 rounded">
+          <span className="text-sm bg-teal-100 text-teal-800 px-2 py-1 rounded">
             {product.category}
           </span>
           <div className="flex gap-2">
             {isOwner && onDelete && (
               <button
                 onClick={() => handleDelete(product._id)}
-                className={`flex items-center space-x-1 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 ${isDeleting ? 'bg-red-400 cursor-not-allowed' : ''}`}
+                className={`flex items-center space-x-1 bg-red-600 text-white px-3 py-1 rounded hover:bg-teal-700 ${isDeleting ? 'bg-teal-400 cursor-not-allowed' : ''}`}
                 disabled={isDeleting}
               >
                 {isDeleting ? (
@@ -61,10 +61,10 @@ export function ProductCard({ product, onDelete }) {
             )}
             <button
               onClick={() => addToCart(product)}
-              className="flex items-center space-x-1 bg-emerald-600 text-white px-3 py-1 rounded hover:bg-emerald-700"
+              className="flex items-center space-x-1 bg-teal-600 text-white px-3 py-1 rounded hover:bg-teal-700"
             >
               <ShoppingCart size={16} />
-              <span></span>
+              <span>Add to Cart</span>
             </button>
           </div>
         </div>

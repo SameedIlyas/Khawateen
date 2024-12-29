@@ -7,7 +7,7 @@ import { CartDrawer } from '../components/marketplace/CartDrawer';
 import { ProductFilters } from '../components/marketplace/ProductFilters';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
-import { useProducts } from '../hooks/useProducts';
+import { useProducts } from '../hooks/useProductHook';
 
 const DEFAULT_FILTERS = {
   category: 'All',
@@ -70,7 +70,7 @@ export function Marketplace() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <p>Loading products...</p>
+        <p className="text-center text-lg text-teal-600">Loading products...</p>
       </div>
     );
   }
@@ -78,27 +78,29 @@ export function Marketplace() {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <p className="text-red-600">{error}</p>
+        <p className="text-center text-lg text-red-600">{error}</p>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold mb-4 md:mb-0">Marketplace</h1>
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row justify-between items-center mb-8 space-y-4 lg:space-y-0">
+        <h1 className="text-3xl font-bold text-teal-700">Marketplace</h1>
         
-        <div className="flex w-full md:w-auto space-x-4 items-center">
+        {/* Search, Cart, and Filters */}
+        <div className="flex space-x-4 items-center w-full lg:w-auto">
           <ProductSearch onSearch={setSearchQuery} />
           
           <button 
             onClick={() => setShowCart(true)}
-            className="relative flex items-center px-4 py-2 border rounded-lg hover:bg-gray-50"
+            className="relative flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
           >
             <ShoppingCart size={20} className="mr-2" />
             Cart
             {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-emerald-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-teal-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 {cartItems.length}
               </span>
             )}
@@ -115,27 +117,28 @@ export function Marketplace() {
         </div>
       </div>
 
+      {/* Add Product Button */}
       {user?.role === 'entrepreneur' && (
-        <div className="mb-8">
+        <div className="mb-8 flex justify-end">
           <button
             onClick={() => setShowAddProduct(!showAddProduct)}
-            className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700"
+            className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700"
           >
             {showAddProduct ? 'Cancel' : 'Add New Product'}
           </button>
 
+          {/* Add Product Form */}
           {showAddProduct && (
-            <div className="mt-4 max-w-lg mx-auto bg-white p-6 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Add New Product</h2>
-              <AddProductForm 
-                onSuccess={handleAddProductSuccess}
-              />
+            <div className="mt-4 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-semibold text-teal-700 mb-4">Add New Product</h2>
+              <AddProductForm onSuccess={handleAddProductSuccess} />
             </div>
           )}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* Product Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {sortedProducts.map((product) => (
           <ProductCard 
             key={product._id} 
@@ -145,6 +148,7 @@ export function Marketplace() {
         ))}
       </div>
 
+      {/* Cart Drawer */}
       <CartDrawer isOpen={showCart} onClose={() => setShowCart(false)} />
     </div>
   );

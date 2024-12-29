@@ -2,38 +2,37 @@ import React from 'react';
 
 function StoryCard({ story }) {
   return (
-    <article className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-      {/* Wrap the entire article in a link for redirection */}
+    <article className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out">
       <a
         href={story.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block"
+        className="block rounded-lg"
       >
         <img
           src={story.image}
           alt={story.title}
-          className="w-full h-64 object-cover"
+          className="w-full h-60 object-cover rounded-t-lg"
         />
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-4">{story.title}</h2>
+        <div className="p-6 space-y-4">
+          <h2 className="text-xl font-semibold text-teal-800 mb-4">{story.title}</h2>
           <div className="flex items-center mb-4">
             <img
               src={story.entrepreneur.avatar}
               alt={story.entrepreneur.name}
-              className="w-12 h-12 rounded-full mr-4"
+              className="w-16 h-16 rounded-full mr-4 border-2 border-teal-200"
             />
             <div>
-              <p className="font-medium">{story.entrepreneur.name}</p>
-              <p className="text-sm text-gray-500">{story.entrepreneur.business}</p>
+              <p className="font-medium text-teal-800">{story.entrepreneur.name}</p>
+              <p className="text-sm text-teal-500">{story.entrepreneur.business}</p>
             </div>
           </div>
-          <p className="text-gray-600 mb-4">{story.excerpt}</p>
+          <p className="text-gray-600 text-lg mb-4">{story.excerpt}</p>
           <div className="flex flex-wrap gap-2">
             {story.tags.map((tag, index) => (
               <span
                 key={index}
-                className="bg-emerald-100 text-emerald-800 text-sm px-3 py-1 rounded-full"
+                className="bg-teal-100 text-teal-700 text-sm px-4 py-1 rounded-full"
               >
                 {tag}
               </span>

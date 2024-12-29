@@ -35,16 +35,16 @@ export function Tutorials() {
   ];
 
   return (
-    <div className="py-12">
-      <div className="container mx-auto px-4">
+    <div className="py-12 bg-teal-50">
+      <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">Tutorials</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-semibold text-teal-800 mb-4">Tutorials</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Step-by-step guides to help you develop essential business skills
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {tutorials.map((tutorial) => (
             <TutorialCard key={tutorial.id} tutorial={tutorial} />
           ))}

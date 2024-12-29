@@ -1,5 +1,5 @@
 import React from 'react';
-import StoryCard  from './StoryCard';
+import StoryCard from './StoryCard';
 
 export function SuccessStories() {
   const stories = [
@@ -34,16 +34,16 @@ export function SuccessStories() {
   ];
 
   return (
-    <div className="py-12">
+    <div className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">Success Stories</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-teal-700 mb-4">Success Stories</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Inspiring stories of rural women entrepreneurs who have transformed their businesses through RuralRise
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stories.map((story) => (
             <StoryCard key={story.id} story={story} />
           ))}

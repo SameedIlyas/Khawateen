@@ -1,7 +1,7 @@
 import { BookOpen, FileText, Video } from 'lucide-react';
 import React, { useState } from 'react';
 import { FilterSection } from '../components/learn/FilterSection';
-import { useFilters } from '../hooks/useFilters';
+import { useFilters } from '../hooks/useFilterHook';
 
 const LANGUAGE_OPTIONS = [
   { value: 'english', label: 'English' },

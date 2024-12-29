@@ -4,49 +4,42 @@ import { RegisterForm } from '../components/auth/RegisterForm';
 
 export function Auth({ mode }) {
   return (
-    <div className="relative min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-700 via-teal-800 to-teal-900 py-12 sm:px-6 lg:px-8">
       {/* Black overlay with transparency */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://tse4.mm.bing.net/th/id/OIP.sY65rfMSkzZG2kpJme-i_gHaE8?rs=1&pid=ImgDetMain')`,
-        }}
-      ></div>
       <div className="absolute inset-0 bg-black opacity-40"></div>
 
-      {/* Content Wrapper */}
-      <div className="relative sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white rounded-lg shadow-lg py-8 px-4 sm:px-10">
-          <h2 className="text-center text-4xl font-extrabold text-gray-900">
-            {mode === 'login' ? 'Sign in to your account' : 'Create your account'}
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            {mode === 'login' ? (
-              <>
-                Or{' '}
-                <Link
-                  to="/register"
-                  className="font-medium text-emerald-600 hover:text-emerald-500"
-                >
-                  create a new account
-                </Link>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <Link
-                  to="/login"
-                  className="font-medium text-emerald-600 hover:text-emerald-500"
-                >
-                  Sign in
-                </Link>
-              </>
-            )}
-          </p>
-        </div>
+      {/* Main Form Wrapper */}
+      <div className="relative z-10 w-full sm:max-w-lg px-6 py-10 bg-white shadow-2xl rounded-xl transform transition-all duration-300 hover:scale-105">
+        <h2 className="text-center text-4xl font-extrabold text-teal-800 mb-8">
+          {mode === 'login' ? 'Sign in to your account' : 'Create your account'}
+        </h2>
+        <p className="mt-2 text-center text-sm text-teal-600">
+          {mode === 'login' ? (
+            <>
+              Or{' '}
+              <Link
+                to="/register"
+                className="font-medium text-teal-600 hover:text-teal-500 transition duration-200"
+              >
+                create a new account
+              </Link>
+            </>
+          ) : (
+            <>
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-medium text-teal-600 hover:text-teal-500 transition duration-200"
+              >
+                Sign in
+              </Link>
+            </>
+          )}
+        </p>
 
+        {/* Form Section */}
         <div className="mt-8">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="bg-white py-8 px-6 rounded-xl shadow-lg sm:px-10">
             {mode === 'login' ? <LoginForm /> : <RegisterForm />}
           </div>
         </div>

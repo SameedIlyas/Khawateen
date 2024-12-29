@@ -51,10 +51,10 @@ export function Blog() {
   ];
 
   return (
-    <div className="py-12">
+    <div className="py-16 bg-teal-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4">RuralRise Blog</h1>
+          <h1 className="text-4xl font-bold text-teal-800 mb-4">Khawateen Blogs</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Insights, tips, and success stories to help rural women entrepreneurs thrive in business
           </p>

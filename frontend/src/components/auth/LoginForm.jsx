@@ -31,43 +31,39 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto px-6 py-8 bg-white shadow-lg rounded-xl border border-gray-200">
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+        <div className="bg-red-100 text-red-600 p-4 rounded-lg text-sm">
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
+        <label htmlFor="email" className="block text-sm font-semibold text-gray-800">Email</label>
         <input
           type="email"
           id="email"
           name="email"
           required
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+          className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 p-4 text-lg"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
+        <label htmlFor="password" className="block text-sm font-semibold text-gray-800">Password</label>
         <input
           type="password"
           id="password"
           name="password"
           required
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500"
+          className="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 p-4 text-lg"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50"
+        className="w-full bg-teal-600 text-white py-4 px-4 rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 text-lg"
       >
         {loading ? 'Signing in...' : 'Sign In'}
       </button>

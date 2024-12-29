@@ -2,7 +2,7 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PrivateRoute } from './components/routes/PrivateRoute';
-import { useInitializeAuth } from './hooks/useInitializeAuth';
+import { useInitializeAuth } from './hooks/useAuthHook';
 import { About } from './pages/About';
 import { Auth } from './pages/Auth';
 import { Blog } from './pages/Blog';

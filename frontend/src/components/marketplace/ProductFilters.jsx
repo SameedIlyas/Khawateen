@@ -38,7 +38,7 @@ export function ProductFilters({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center px-4 py-2 border rounded-lg hover:bg-gray-50"
+        className="flex items-center px-4 py-2 border rounded-lg hover:bg-teal-50"
       >
         <Filter size={20} className="mr-2" />
         Filters & Sort
@@ -47,10 +47,10 @@ export function ProductFilters({
       {isOpen && (
         <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg p-4 z-10">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Filters & Sort</h3>
+            <h3 className="font-semibold text-teal-700">Filters & Sort</h3>
             <button
               onClick={handleReset}
-              className="flex items-center text-sm text-emerald-600 hover:text-emerald-700"
+              className="flex items-center text-sm text-teal-600 hover:text-teal-700"
             >
               <RotateCcw size={14} className="mr-1" />
               Reset All
@@ -59,7 +59,7 @@ export function ProductFilters({
 
           {/* Sort Options */}
           <div className="mb-6">
-            <h3 className="font-semibold mb-2 flex items-center">
+            <h3 className="font-semibold mb-2 flex items-center text-teal-600">
               <ArrowUpDown size={16} className="mr-2" />
               Sort By
             </h3>
@@ -82,7 +82,7 @@ export function ProductFilters({
 
           {/* Category Filter */}
           <div className="mb-6">
-            <h3 className="font-semibold mb-2">Category</h3>
+            <h3 className="font-semibold mb-2 text-teal-600">Category</h3>
             <div className="space-y-2">
               {CATEGORIES.map(category => (
                 <label key={category} className="flex items-center">
@@ -102,7 +102,7 @@ export function ProductFilters({
 
           {/* Price Range Filter */}
           <div>
-            <h3 className="font-semibold mb-2">Price Range</h3>
+            <h3 className="font-semibold mb-2 text-teal-600">Price Range</h3>
             <div className="space-y-2">
               <div>
                 <label className="text-sm">Min Price:</label>
@@ -110,7 +110,7 @@ export function ProductFilters({
                   type="number"
                   value={priceRange.min}
                   onChange={(e) => handlePriceChange(e, 'min')}
-                  className="w-full mt-1 p-2 border rounded"
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
               <div>
@@ -119,7 +119,7 @@ export function ProductFilters({
                   type="number"
                   value={priceRange.max}
                   onChange={(e) => handlePriceChange(e, 'max')}
-                  className="w-full mt-1 p-2 border rounded"
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
             </div>
