@@ -1,23 +1,27 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 
-const protect = async (req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-            req.user = await User.findById(decoded.id).select('-password');
-            next();
-        } catch (error) {
-            res.status(401).json({ message: 'Not authorized, token failed' });
-        }
+  if (!token) {
+    return res.status(401).json({ message: 'Token not found. Authorization is required.' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach decoded payload to the request
+    next();
+  } catch (err) {
+    // Handle specific JWT errors
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token has expired. Please log in again.' });
+    } else if (err.name === 'JsonWebTokenError') {
+      return res.status(403).json({ message: 'Invalid token. Please provide a valid token.' });
+    } else {
+      return res.status(500).json({ message: 'An error occurred while verifying the token.' });
     }
-
-    if (!token) {
-        res.status(401).json({ message: 'Not authorized, no token' });
-    }
+  }
 };
 
-module.exports = { protect };
+module.exports = authenticateToken;

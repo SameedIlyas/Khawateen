@@ -1,27 +1,99 @@
+// authController.js
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const { generateToken } = require("../utils/token");
 
-exports.register = async (req, res) => {
-    try {
-        const { name, email, password, role } = req.body;
-        const user = await User.create({ name, email, password, role });
-        const token = generateToken(user._id, user.role);
-        res.status(201).json({ success: true, token });
-    } catch (error) {
-        res.status(400).json({ success: false, error: error.message });
+// Register User
+const registerUser = async (req, res) => {
+  try {
+    const { email, password, name, role, location } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
     }
+
+    const user = new User({
+      email,
+      password,
+      name,
+      role,
+      location,
+    });
+
+    await user.save();
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        location: user.location,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Registration failed" });
+  }
 };
 
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
-            return res.status(401).json({ success: false, error: "Invalid credentials" });
-        }
-        const token = generateToken(user._id, user.role);
-        res.status(200).json({ success: true, token });
-    } catch (error) {
-        res.status(400).json({ success: false, error: error.message });
+// Login User
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        location: user.location,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Login failed" });
+  }
+};
+
+// Get Current User
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching user" });
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getCurrentUser,
 };
