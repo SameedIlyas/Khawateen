@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const DEV_ENV = import.meta.env.VITE_APP_DEV_ENV; 
-const DEV_ENV = "production";
+const DEV_ENV = "development";
 let API_URL = 'http://localhost:5000/api';
 
 if (DEV_ENV === "development") {
@@ -65,5 +65,32 @@ export const resources = {
     return response.data;
   },
 };
+
+// Courses API
+export const courses = {
+    getAll: async () => {
+      const response = await api.get('/courses');
+      return response.data;
+    },
+  
+    getById: async (id) => {
+      const response = await api.get(`/courses/${id}`);
+      return response.data;
+    },
+  
+    create: async (courseData) => {
+      const response = await api.post('/courses', courseData);
+      return response.data;
+    },
+  
+    update: async (id, courseData) => {
+      const response = await api.put(`/courses/${id}`, courseData);
+      return response.data;
+    },
+  
+    delete: async (courseId) => {
+      await api.delete(`/courses/${courseId}`);
+    }
+  };
 
 export default api;

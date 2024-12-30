@@ -7,8 +7,12 @@ export function ProductCard({ product, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false); // Track loading state
   const addToCart = useCartStore(state => state.addItem);
   const { user } = useAuthStore();
+    // Check if the user is the seller or an admin
   const isOwner = user?._id === product.seller?._id;
-
+  const isAdmin = user?.role === 'admin';
+    
+    // Allow admin to delete any product
+  const canDelete = isOwner || isAdmin;
   const handleDelete = async (productId) => {
     setIsDeleting(true); // Start loading state
     try {
@@ -46,7 +50,7 @@ export function ProductCard({ product, onDelete }) {
             {product.category}
           </span>
           <div className="flex gap-2">
-            {isOwner && onDelete && (
+            {canDelete && onDelete && (
               <button
                 onClick={() => handleDelete(product._id)}
                 className={`flex items-center space-x-1 bg-red-600 text-white px-3 py-1 rounded hover:bg-teal-700 ${isDeleting ? 'bg-teal-400 cursor-not-allowed' : ''}`}

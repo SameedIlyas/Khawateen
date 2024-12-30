@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 //const emailRoutes = require("./routes/contactRoutes");
 const productRoutes = require("./routes/productRoutes");
+const courseRoutes = require("./routes/courseRoutes");
 const { errorHandler, notFoundHandler } = require("./middlewares/errorHandler");
 const corsSetup = require("./middlewares/corsSetup");
 
@@ -24,6 +25,7 @@ connectDB();
 app.use("/api/auth", authRoutes);
 //app.use("/api/contact", emailRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/courses", courseRoutes);
 
 // 404 Route Handler
 app.use(notFoundHandler);

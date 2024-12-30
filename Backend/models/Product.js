@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
     enum: ['Handicrafts', 'Food', 'Textiles', 'Art']
   },
   seller: {
-    type: Object,
+    type: String,
     ref: 'User',
     required: true
   },
