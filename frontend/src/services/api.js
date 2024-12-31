@@ -93,4 +93,15 @@ export const courses = {
     }
   };
 
+  export const chat = {
+    getAll: async () => {
+      const response = await api.get('/chat');
+      return response.data;
+    },
+    create: async (messageData) => {
+      const response = await api.post('/chat', messageData);
+      return response.data;
+    }
+  };
+
 export default api;
